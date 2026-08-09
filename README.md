@@ -1,145 +1,349 @@
-AI Interview Agent
+🎯 AI Interview Agent
 
-An adaptive AI technical interviewer based on a candidate's learningjourney.
+Build the interviewer, not the interview.
 
-AI Interview Agent is a curriculum-aware technical interviewing systemdesigned to evaluate what a candidate actually understands instead ofasking a fixed set of generic interview questions.
+An adaptive technical interviewing platform for AI engineeringcandidates. Instead of following a fixed questionnaire, the systemtracks candidate performance, curriculum coverage, question history,difficulty, weak areas and answer quality to select the next questionand produce a structured final report.
 
-🎯 Problem Statement
+🔗 Live Project
 
-Traditional technical interviews often use the same questions for everycandidate. This creates several problems:
+Resource                            URL
 
-Questions may not match what the candidate has learned.
+GitHub                              https://github.com/VanshTyagi99/AI-Interview-Agent
 
-Difficulty does not adapt to candidate performance.
+Live Frontend                       https://ai-interview-agent-iota-two.vercel.app
 
-Weak technical areas are difficult to identify systematically.
+Live Backend                        https://ai-interview-agent-api-svqe.onrender.com
 
-Evaluation can become subjective.
+Health Check                        https://ai-interview-agent-api-svqe.onrender.com/health
 
-Interview feedback is often too generic.
+📌 Problem
 
-Candidate learning progress is not connected with interviewperformance.
+Traditional technical interviews often behave like staticquestionnaires:
 
-The Goal
+Question 1 → Question 2 → Question 3 → ... → Final Score
 
-Build an interviewer that can:
+This creates several problems:
 
-Understand the candidate's learning journey.
+Strong and weak candidates may receive similar questions.
 
-Select questions from relevant curriculum topics.
+Difficulty does not respond to performance.
 
-Adapt question difficulty.
+Weak concepts are not automatically revisited.
 
-Ask follow-up questions when required.
+Topic/curriculum coverage is difficult to control.
 
-Evaluate answers using a deterministic rubric.
+Keyword-only scoring can reward technically related but irrelevantanswers.
 
-Track curriculum and topic coverage.
+Final feedback is often generic.
 
-Identify strengths and weak areas.
-
-Generate a structured final interview report.
+The AI Interview Agent turns the interview into an adaptive assessmentloop.
 
 💡 Solution
 
-The AI Interview Agent treats the interview as an adaptiveevaluation process.
+The system continuously maintains:
 
-Candidate
-    ↓
-Candidate Profile
-    ↓
-Curriculum
-    ↓
-Adaptive Question Selection
-    ↓
-Candidate Answer
-    ↓
-Deterministic Evaluation
-    ↓
-Difficulty / Topic Adaptation
-    ↓
-Next Question
-    ↓
-Final Evaluation
-    ↓
-Performance Report
+Candidate profile
 
-✨ Key Features
+Session ID
 
-1. Curriculum-Aware Interviewing
+Current question
 
-Questions are selected according to the candidate's curriculum andlearning journey.
+Current topic
 
-The system tracks:
+Current difficulty
 
 Curriculum day
 
-Curriculum title
+Asked questions
 
-Topic
+Follow-up count
 
-Difficulty
+Answer history
 
-Questions already asked
+Topic scores
 
-Curriculum days already covered
+Curriculum coverage
 
-2. Adaptive Difficulty
+Final performance
 
-The interviewer can move between:
+Interview flow
+
+Candidate Profile
+       ↓
+Create Session
+       ↓
+Select Curriculum Day
+       ↓
+Select Difficulty
+       ↓
+Ask Question
+       ↓
+Candidate Answer
+       ↓
+Phase 3.5 Evaluation
+       ↓
+┌───────────────────────┐
+│ Score + Intent + Depth│
+└───────────┬───────────┘
+            ↓
+   Adaptive Decision
+      ↙          ↘
+ Strong          Weak
+   ↓               ↓
+Harder /       Easier /
+deeper         same-area
+question       reinforcement
+      ↘          ↙
+       Next Question
+            ↓
+       Repeat
+            ↓
+       Final Report
+
+🏗️ Architecture
+
+┌──────────────────────────────┐
+│          Candidate           │
+│ Profile + Technical Answer   │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│          FRONTEND            │
+│ HTML + CSS + JavaScript      │
+│                              │
+│ Candidate setup              │
+│ Interview UI                 │
+│ Question / Answer UI         │
+│ Progress                     │
+│ Final report                 │
+└──────────────┬───────────────┘
+               │ HTTPS / JSON
+               ↓
+┌──────────────────────────────┐
+│        FASTAPI BACKEND       │
+│                              │
+│ Session management           │
+│ Curriculum selection         │
+│ Adaptive difficulty          │
+│ Follow-up selection          │
+│ Deterministic evaluation     │
+│ Final result generation      │
+│ History / result APIs        │
+└──────────────┬───────────────┘
+               ↓
+┌──────────────────────────────┐
+│       Project Data           │
+│ Curriculum / Candidates      │
+│ Sessions / Interview History │
+└──────────────────────────────┘
+
+Deployment
+
+Vercel Frontend
+      │ HTTPS
+      ▼
+Render FastAPI Backend
+      │
+      ▼
+Interview + Evaluation Engine
+
+🧩 Technology Stack
+
+Frontend
+
+HTML5
+
+CSS3
+
+Vanilla JavaScript
+
+Fetch API
+
+Browser session state
+
+Backend
+
+Python
+
+FastAPI
+
+Pydantic
+
+Uvicorn
+
+Data / Intelligence
+
+Curriculum JSON
+
+Candidate/session data
+
+Deterministic rubrics
+
+Question-specific intent rules
+
+Adaptive selection logic
+
+Deployment
+
+GitHub
+
+Vercel
+
+Render
+
+🎤 Core Interview Engine
+
+The current interview configuration uses:
+
+8 total questions
+
+Minimum 4 curriculum days
+
+Easy / Medium / Hard difficulty
+
+Topic tracking
+
+Follow-up questions
+
+Weak-area reinforcement
+
+Duplicate-question avoidance
+
+Complete answer history
+
+Final topic-wise scoring
+
+The interview is curriculum-aware rather than a fixed list.
+
+🧠 Adaptive Question Selection
+
+The next question considers:
+
+Candidate profile
+
+Curriculum coverage
+
+Previous questions
+
+Topic performance
+
+Current difficulty
+
+Follow-up availability
+
+Weak areas
+
+Remaining interview capacity
+
+The selector first works to satisfy the minimum curriculum-day coverage.After that it can prioritize weak areas, candidate-relevant unused days,or other unused curriculum content.
+
+This keeps interviews diverse and prevents unnecessary repetition.
+
+📈 Question-Level Improvement System
+
+A major feature is performance-based question difficulty.
+
+Instead of:
+
+Easy → Easy → Easy → Easy
+
+the system can evolve:
 
 Easy
-
+ ↓ strong answer
 Medium
-
+ ↓ strong answer
 Hard
 
-based on candidate performance.
+Example:
 
-3. Topic-Aware Question Selection
+Easy > What are embeddings and how do they represent semanticmeaning?
 
-The system understands the topic associated with each question.
+Medium > How would you evaluate whether an embedding model isproducing useful representations?
 
-Examples:
+Hard > How would you design an embedding and retrieval evaluationstrategy for a production RAG system?
 
-Embeddings
-Vector Database
-RAG / Retrieval
-Prompt Engineering
-Agents
-Data Processing
-Frontend
-VS Code & Python Environment Setup
+For weak answers, the system can move toward easier questions or revisitthe same curriculum area before progressing.
 
-4. Follow-Up Questions
+This makes the interview behave more like an adaptive assessment than astatic quiz.
 
-The interview can use follow-up questions to investigate understandingbefore moving to a new topic.
+🔁 Follow-Up Questions
 
-5. Deterministic Answer Evaluation
+The system can explore a topic further when an answer shows enoughunderstanding.
 
-Phase 3.5 evaluates answers across multiple dimensions instead ofrelying only on simple keyword matching.
+Example for Vector Database:
+
+Why are embeddings used in vector databases?
+
+What is the difference between cosine similarity and Euclideandistance?
+
+How would you improve search performance in a large vector database?
+
+Follow-ups are controlled by:
+
+Current topic
+
+Candidate score
+
+Follow-up count
+
+Previously asked questions
+
+🧪 Phase 3.5 --- Deterministic Evaluation Engine
+
+Phase 3.5 is the core evaluation upgrade.
+
+The evaluator combines:
+
+Topic rubric
+
+Question-specific concepts
+
+Technical concepts
+
+Practical concepts
+
+Answer depth
+
+Strict question relevance
+
+The implementation explicitly documents the Phase 3.5 weighting as:
 
 Dimension                     Weight
 
 Concept Coverage                 30%Technical Depth                  25%Practical Understanding          15%Answer Depth                     15%Question Relevance               15%Total                   100%
 
-The evaluator uses:
+The source implementation defines these dimensions inevaluate_answer(). fileciteturn23file1
 
-Topic-specific rubrics
+🎯 Question-Specific Relevance
 
-Question-specific concepts
+A technically related answer is not automatically considered a correctanswer.
 
-Technical keywords
+Example question:
 
-Practical keywords
+How would you evaluate whether an embedding model is producing usefulrepresentations?
 
-Question intent
+Weak/irrelevant answer:
 
-Normalized candidate answers
+A vector database stores embeddings and retrieves documents for RAG.
 
-6. Explainable Evaluation
+This mentions embeddings, vectors and retrieval, but it does not explainhow to evaluate an embedding model.
 
-Question-level evaluation can expose:
+Phase 3.5 therefore uses question-specific aliases and intent rules todistinguish:
+
+Topic relevance
+      ≠
+Question relevance
+
+The implementation contains question-specific concepts for embeddings,Python environment setup, local LLMs, FastAPI + React, CSV processing,document extraction, and chunking/metadata.fileciteturn23file0turn23file4
+
+🔍 Evaluation Signals
+
+Each answer can produce:
+
+Overall score
+
+Performance level
 
 Matched concepts
 
@@ -147,48 +351,67 @@ Matched technical concepts
 
 Matched practical concepts
 
-Matched question intent
-
 Word count
 
-Individual evaluation scores
+Concept score
+
+Technical score
+
+Practical score
+
+Depth score
+
+Relevance score
+
+Matched question intent
 
 Feedback
 
-7. Topic-Wise Scoring
+This makes the evaluation transparent and testable instead of returningonly an unexplained number. fileciteturn23file1
 
-Example:
+📚 Curriculum-Aware Assessment
 
-{
-  "Embeddings": {
-    "score": 57,
-    "attempts": 2
-  },
-  "Vector Database": {
-    "score": 56,
-    "attempts": 2
-  },
-  "Prompt Engineering": {
-    "score": 44,
-    "attempts": 2
-  }
-}
+Questions are connected to curriculum days and can carry:
 
-8. Curriculum Coverage Tracking
+Curriculum day
 
-The final result records which curriculum days were covered and whetherthe minimum required coverage was met.
+Curriculum title
 
-9. Weak Area Detection
+Curriculum type
 
-Example:
+Topic
 
-Weak Areas:
-- Prompt Engineering
-- Agents
+Difficulty
 
-10. Final Interview Report
+Question
 
-The final result contains:
+The session tracks curriculum_days_covered and evaluates whether theminimum curriculum requirement has been met. fileciteturn24file6
+
+🗂️ Session Management
+
+An interview session can contain:
+
+sessionId
+candidate
+questionNumber
+currentQuestion
+currentTopic
+currentDay
+difficulty
+completed
+followUpCount
+curriculumDaysCovered
+askedQuestions
+history
+topics
+
+History stores the candidate response and its evaluation.
+
+Available backend endpoints also expose session history and finalresults. fileciteturn24file7
+
+📊 Final Evaluation
+
+At completion the system generates:
 
 Overall score
 
@@ -202,6 +425,10 @@ Completion percentage
 
 Curriculum days covered
 
+Curriculum day count
+
+Minimum required days
+
 Curriculum requirement status
 
 Topic-wise scores
@@ -212,464 +439,479 @@ Weak areas
 
 Recommendation
 
-Feedback
+Structured feedback
 
-Next learning actions
+The final feedback contains a summary, strengths, gaps and recommendednext steps. fileciteturn24file6
 
-🧠 Phase 3.5 --- Deterministic Evaluation Engine
+Performance bands
 
-Phase 3.5 is the evaluation layer of the project.
+  Score Level
 
-The evaluator receives:
+85--100 Excellent
+ 70--84 Good
+ 50--69 Average
+  0--49 Weak
 
-Question
-Topic
-Candidate Answer
-Curriculum Day
-
-It then follows:
-
-Normalize Answer
-      ↓
-Load Topic Rubric
-      ↓
-Load Question-Specific Concepts
-      ↓
-Find Concept Matches
-      ↓
-Find Technical Matches
-      ↓
-Find Practical Matches
-      ↓
-Evaluate Question Relevance
-      ↓
-Calculate Weighted Score
-      ↓
-Assign Performance Level
-      ↓
-Generate Feedback
-
-Example evaluation:
-
-{
-  "score": 71,
-  "level": "good",
-  "matched_concepts": [],
-  "matched_technical": [],
-  "matched_practical": [],
-  "word_count": 45,
-  "concept_score": 88,
-  "depth_score": 70,
-  "technical_score": 17,
-  "practical_score": 100,
-  "relevance_score": 100,
-  "feedback": "Good technical understanding."
-}
-
-🏗️ System Architecture
-
-                    ┌──────────────────────┐
-                    │      Candidate       │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │     Frontend UI      │
-                    │    HTML / CSS / JS   │
-                    └──────────┬───────────┘
-                               │
-                             REST
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │       FastAPI        │
-                    │    Interview API     │
-                    └──────────┬───────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-              ▼                ▼                ▼
-      ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-      │  Curriculum  │ │   Session    │ │  Evaluation  │
-      │    Engine    │ │    Engine    │ │    Engine    │
-      └──────┬───────┘ └──────┬───────┘ └──────┬───────┘
-             │                │                │
-             └────────────────┼────────────────┘
-                              ▼
-                    ┌──────────────────────┐
-                    │    JSON Data Layer   │
-                    │ candidates.json      │
-                    │ curriculum.json      │
-                    │ sessions.json*       │
-                    └──────────────────────┘
-
-* Runtime session data is excluded from Git.
-
-📁 Project Structure
-
-AI-Interview-Agent/
-│
-├── backend/
-│   ├── app/
-│   │   ├── __init__.py
-│   │   └── main.py
-│   │
-│   ├── models/
-│   │   ├── __init__.py
-│   │   └── interview.py
-│   │
-│   └── requirements.txt
-│
-├── data/
-│   ├── candidates.json
-│   └── curriculum.json
-│
-├── frontend/
-│   ├── css/
-│   ├── js/
-│   │   └── app.js
-│   └── index.html
-│
-├── .gitignore
-└── README.md
-
-data/sessions.json is runtime-generated session data and should remainlocal.
-
-🛠️ Tech Stack
-
-Technology   Purpose
-
-Python       Backend logicFastAPI      REST APIPydantic     Request/response validationUvicorn      ASGI serverHTML         Frontend structureCSS          Frontend stylingJavaScript   Frontend interactionJSON         Curriculum, candidate and runtime dataGit          Version controlGitHub       Source code hosting
+Topic scores are averaged from interview history. Topics scoring atleast 70 are treated as strengths, while topics below 50 are treated asweak areas. fileciteturn24file8
 
 🔌 API Endpoints
 
-Health Check
+Health
 
 GET /health
 
-Used to verify that the backend is running.
+Example:
 
-Interview API
+{
+  "status": "ok"
+}
+
+Start / Continue Interview
 
 POST /api/interview
 
-Request Body
-
-{
-  "sessionId": "CAND-018",
-  "message": "Candidate answer",
-  "candidate": {
-    "id": "CAND-018",
-    "name": "Test Candidate",
-    "jobRole": "AI Candidate",
-    "yearsExperience": 0,
-    "education": "",
-    "status": "TEST"
-  }
-}
-
-Response Example
+Example question response:
 
 {
   "reply": "What are embeddings and how do they represent the semantic meaning of text?",
   "done": false,
   "difficulty": "easy",
   "topic": "Embeddings",
-  "curriculumDay": 7,
-  "feedback": null,
-  "result": null
+  "curriculumDay": 7
 }
+
+The backend returns the next question with difficulty, topic andcurriculum information. fileciteturn24file12
 
 Interview History
 
 GET /api/interview/{session_id}/history
 
-Example:
+Returns candidate data, current state, curriculum coverage, askedquestions, history and topic statistics. fileciteturn24file7
 
-/api/interview/CAND-018/history
+Final Result
 
-Returns stored interview history when a session exists.
+GET /api/interview/{session_id}/result
 
-📊 Example Final Result
+Returns:
 
-{
-  "sessionId": "submission-test-001",
-  "interviewCompleted": true,
-  "result": {
-    "overall_score": 51,
-    "performance": "average",
-    "total_questions": 8,
-    "answered_questions": 8,
-    "completion_percentage": 100,
-    "curriculum_days_covered": [
-      7,
-      8,
-      10,
-      12,
-      13,
-      22
-    ],
-    "curriculum_day_count": 6,
-    "minimum_required_days": 4,
-    "curriculum_requirement_met": true,
-    "weak_areas": [
-      "Prompt Engineering",
-      "Agents"
-    ]
-  }
-}
+sessionId
+interviewCompleted
+result
+feedback
 
-🔄 Complete Interview Flow
+🖥️ Frontend Features
 
-Candidate starts interview
-          ↓
-Candidate/session identified
-          ↓
-Curriculum loaded
-          ↓
-Question selected
-          ↓
-Candidate submits answer
-          ↓
-Answer evaluated
-          ↓
-Score + topic + difficulty stored
-          ↓
-Next question selected
-          ↓
-Interview continues
-          ↓
-Configured question count completed
-          ↓
-Final evaluation generated
-          ↓
-Performance report returned
-
-🧪 Testing
-
-Start the backend:
-
-python -m uvicorn backend.app.main:app --reload
-
-Then open the FastAPI Swagger interface in the browser.
-
-Recommended test:
-
-Candidate ID: CAND-018
-
-Test the following:
-
-Start an interview.
-
-Submit a strong answer.
-
-Submit a weak or partially relevant answer.
-
-Observe the evaluation.
-
-Continue until the configured question count is completed.
-
-Verify final score.
-
-Verify curriculum coverage.
-
-Verify topic scores.
-
-Verify weak areas.
-
-Verify final feedback.
-
-📸 Demo
-
-After the frontend is completed, add screenshots under:
-
-docs/
-├── home.png
-├── interview.png
-├── evaluation.png
-├── result.png
-└── swagger.png
-
-Example:
-
-## Demo
-
-### Candidate Screen
-![Candidate Screen](docs/home.png)
-
-### Interview Screen
-![Interview Screen](docs/interview.png)
-
-### Final Evaluation
-![Final Evaluation](docs/result.png)
-
-### API Documentation
-![Swagger API](docs/swagger.png)
-
-A short 30--45 second GIF should demonstrate:
+Candidate Setup
 
 Candidate ID
-      ↓
-Start Interview
-      ↓
-Question
-      ↓
-Candidate Answer
-      ↓
-Evaluation
-      ↓
-Next Question
-      ↓
-Final Score
 
-🚀 Installation & Setup
+Name
 
-1. Clone the Repository
+Job role
 
-Clone the public GitHub repository to your local machine.
+Experience
 
-2. Open the Project
+Interview Screen
 
+Question number
+
+Topic
+
+Difficulty
+
+Technical question
+
+Answer input
+
+Submit answer
+
+Progress
+
+Connection status
+
+Result Screen
+
+Overall score
+
+Performance
+
+Completion
+
+Curriculum coverage
+
+Topic scores
+
+Strengths
+
+Weak areas
+
+Recommendation
+
+Feedback
+
+🚀 Local Setup
+
+1. Clone
+
+git clone https://github.com/VanshTyagi99/AI-Interview-Agent.git
 cd AI-Interview-Agent
 
-3. Create Virtual Environment
+2. Virtual environment
 
-Windows
+Windows:
 
 python -m venv .venv
 .venv\Scriptsctivate
 
-macOS / Linux
+Linux/macOS:
 
 python3 -m venv .venv
 source .venv/bin/activate
 
-4. Install Dependencies
+3. Install backend dependencies
 
 pip install -r backend/requirements.txt
 
-5. Start Backend
+4. Start backend
+
+From project root:
+
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
+
+Development reload:
 
 python -m uvicorn backend.app.main:app --reload
 
-6. API Documentation
+5. Start frontend
 
-Use the local FastAPI Swagger documentation at:
+python -m http.server 5500 --directory frontend
+
+Open:
+
+http://127.0.0.1:5500
+
+🧪 API Testing
+
+Health:
+
+curl http://127.0.0.1:8000/health
+
+Swagger/OpenAPI:
 
 http://127.0.0.1:8000/docs
 
-7. Frontend
+Expected health response:
 
-The frontend is located in the frontend/ directory.
+{
+  "status": "ok"
+}
 
-Serve it using a local web server and configure it to communicate withthe FastAPI backend.
+🧪 End-to-End Testing
 
-🔐 Git & Security
+Candidate Setup
+      ↓
+Start Interview
+      ↓
+Question 1
+      ↓
+Submit Answer
+      ↓
+Evaluation
+      ↓
+Adaptive Question
+      ↓
+...
+      ↓
+Question 8
+      ↓
+Final Evaluation
+      ↓
+Final Report
 
-Recommended .gitignore entries:
+Recommended tests:
 
-# Python
-__pycache__/
-*.py[cod]
+Strong Answer Test
 
-# Virtual environment
-.venv/
-venv/
-env/
+Give a technically strong answer and verify that the next question canbecome more challenging.
 
-# Runtime session data
-data/sessions.json
+Weak Answer Test
 
-# Environment variables
-.env
-.env.*
+Give an unrelated answer and verify lower scoring plus weak-areahandling.
 
-# IDE
-.vscode/
-.idea/
+Relevance Test
 
-# OS
-.DS_Store
-Thumbs.db
+Give an answer related to the topic but not to the actual question andverify question-specific relevance.
 
-Candidate session data should not be committed to a public repository.
+Coverage Test
 
-📈 Future Scope
+Verify the interview reaches the minimum curriculum-day requirement.
 
-LLM-based semantic evaluation
+Completion Test
 
-Voice-based interviews
+Complete all 8 questions and verify:
 
-Speech-to-text integration
+answered_questions = 8
+completion_percentage = 100
 
-Real-time conversational interviewing
+🧱 Project Structure
 
-Advanced semantic question matching
+AI-Interview-Agent/
+│
+├── backend/
+│   ├── app/
+│   │   └── main.py
+│   ├── models/
+│   │   └── interview.py
+│   └── requirements.txt
+│
+├── data/
+│   ├── curriculum.json
+│   ├── candidates.json
+│   └── sessions.json
+│
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── app.js
+│
+├── README.md
+├── PROMPTS.md
+└── .gitignore
 
-Vector database integration
+sessions.json is runtime/session data and should remain excluded fromversion control where configured by .gitignore.
 
-RAG-based curriculum retrieval
+🌐 Deployment
 
-Candidate comparison dashboard
+Frontend --- Vercel
 
-Recruiter dashboard
+The static frontend is deployed on Vercel.
 
-Interview analytics
+Live:
 
-Authentication and role-based access
+https://ai-interview-agent-iota-two.vercel.app
 
-Production database
+Backend --- Render
 
-Cloud deployment
+The FastAPI backend is deployed on Render.
 
-Model-based question generation
+Live:
 
-Multi-agent interviewer architecture
+https://ai-interview-agent-api-svqe.onrender.com
+
+Health:
+
+https://ai-interview-agent-api-svqe.onrender.com/health
+
+The frontend communicates with the production backend over HTTPS, withFastAPI CORS configured for the deployed frontend.
+
+🛡️ Error Handling
+
+The application handles:
+
+Backend connection failures
+
+Invalid API responses
+
+Missing interview questions
+
+Invalid sessions
+
+HTTP 404 responses
+
+HTTP 500 responses
+
+Network errors
+
+Empty/invalid interview responses
+
+The frontend also supports production API configuration rather thanrelying on a localhost backend when deployed.
+
+🔍 Why Deterministic Evaluation?
+
+Phase 3.5 intentionally uses a deterministic evaluation layer.
+
+Reproducibility
+
+The same input produces consistent evaluation behavior.
+
+Explainability
+
+Matched concepts and scoring dimensions can be inspected.
+
+Testability
+
+Correct, weak and intentionally irrelevant answers can be tested.
+
+Controlled behavior
+
+Question-specific intent rules reduce false positives from generic topickeywords.
+
+Hackathon-friendly
+
+Judges can inspect the evaluation logic directly in the repository.
+
+🎯 Phase 3.5 Feature Summary
+
+✅ Curriculum-aware interviewing
+
+✅ Adaptive question selection
+
+✅ Easy / Medium / Hard progression
+
+✅ Performance-based difficulty adjustment
+
+✅ Follow-up questions
+
+✅ Weak-area reinforcement
+
+✅ Duplicate-question avoidance
+
+✅ Deterministic answer evaluation
+
+✅ Concept coverage scoring
+
+✅ Technical depth scoring
+
+✅ Practical understanding scoring
+
+✅ Answer depth scoring
+
+✅ Question-specific relevance
+
+✅ Topic-wise scoring
+
+✅ Curriculum-day tracking
+
+✅ Session history
+
+✅ Strength detection
+
+✅ Weak-area detection
+
+✅ Final recommendations
+
+✅ Structured feedback
+
+✅ Production frontend/backend deployment
+
+📸 Recommended Hackathon Demo
+
+Capture screenshots/GIFs of:
+
+Candidate setup
+
+First technical question
+
+Medium/harder adaptive question
+
+Weak-answer evaluation
+
+Curriculum/topic progression
+
+Final result page
+
+Topic-wise scores
+
+Strengths and weak areas
+
+A short demo should show:
+
+Start
+  ↓
+Question
+  ↓
+Answer
+  ↓
+Adaptive Next Question
+  ↓
+Question 8
+  ↓
+Final Report
+
+🔮 Future Improvements
+
+LLM-Assisted Semantic Evaluation
+
+Add an LLM as a secondary semantic evaluator while retainingdeterministic guardrails.
+
+Production Database
+
+Move session/candidate data from JSON to PostgreSQL or anotherpersistent database.
+
+Vector Question Retrieval
+
+Use embeddings to retrieve the most appropriate questions from a largercurriculum.
+
+Skill Graph
+
+Model relationships between skills and prerequisites.
+
+Voice Interview
+
+Add speech-to-text and text-to-speech.
+
+Recruiter Dashboard
+
+Add candidate comparison, skill heatmaps, trends and question-levelanalytics.
+
+Authentication
+
+Add recruiter/admin authentication and candidate access control.
+
+Observability
+
+Add structured logs, metrics, latency monitoring and tracing.
 
 🏆 Why This Project?
 
-The core idea is simple:
+The project demonstrates the progression:
 
-The interviewer should adapt to the candidate, not force everycandidate through the same interview.
+Static Question Bank
+        ↓
+Adaptive Interview Engine
+        ↓
+Question-Aware Evaluation
+        ↓
+Curriculum-Aware Assessment
+        ↓
+Actionable Candidate Report
 
-The system connects:
+The goal is not to build another quiz.
 
-Learning Journey
-      +
-Curriculum
-      +
-Adaptive Interview
-      +
-Deterministic Evaluation
-      +
-Performance Analytics
+The goal is to build an interviewer that adapts.
 
-This creates a structured, measurable and curriculum-aligned technicalinterview experience.
+Build the interviewer, not the interview.
 
-🎯 Project Highlights
+📝 AI-Assisted Development
 
-Adaptive
+The repository contains:
 
-Questions can adapt based on candidate performance.
+PROMPTS.md
 
-Curriculum-Aware
+It documents the AI-assisted development process, including prompts usedfor architecture, adaptive interviewing, evaluation, question-specificrelevance, session management, frontend integration, debugging, testingand final reporting.
 
-Interview coverage is connected to the candidate's learning journey.
+📄 License
 
-Explainable
+This project was created as a hackathon/engineering project.
 
-The evaluator exposes concepts, technical matches, practical matches andquestion relevance.
+Add an explicit open-source license such as MIT if the project isintended for broader redistribution.
 
-Measurable
+👨‍💻 Project
 
-Every interview produces structured scores and performance information.
+AI Interview Agent
 
-Actionable
+Built with:
 
-The final report identifies weak areas and provides recommendations forimprovement.
+Python · FastAPI · Pydantic · JavaScript · HTML · CSS ·GitHub · Render · Vercel
 
-👨‍💻 Author
+🔗 Final Links
 
-Vansh Tyagi
+GitHub:https://github.com/VanshTyagi99/AI-Interview-Agent
 
-B.Tech Computer ScienceIMS Engineering College, Ghaziabad
+Live Demo:https://ai-interview-agent-iota-two.vercel.app
+
+Backend:https://ai-interview-agent-api-svqe.onrender.com
+
+Health Check:https://ai-interview-agent-api-svqe.onrender.com/health
