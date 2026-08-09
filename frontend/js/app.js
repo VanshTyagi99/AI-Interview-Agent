@@ -9,7 +9,7 @@
    CONFIG
 ========================================================= */
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://ai-interview-agent-api-svqe.onrender.com";
 const INTERVIEW_ENDPOINT = `${API_BASE_URL}/api/interview`;
 
 const TOTAL_QUESTIONS = 8;
