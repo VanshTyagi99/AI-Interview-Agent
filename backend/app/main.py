@@ -24,12 +24,15 @@ app.add_middleware(
         "http://localhost:5500",
         "http://127.0.0.1:5501",
         "http://localhost:5501",
+
+        # Production Vercel frontend
+        "https://ai-interview-agent-iota-two.vercel.app",
+        "https://ai-interview-agent-46uiwsg6v-vanshtyagi7032-7748s-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # =========================================================
 # CONFIGURATION
 # =========================================================
