@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Interview Agent</title>
+    <meta
+        name="description"
+        content="AI Interview Agent - adaptive technical interviewing based on a candidate's learning journey."
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         APP SHELL
+    ====================================================== -->
+    <div class="app-shell">
+
+        <!-- ================= HEADER ================= -->
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark">AI</div>
+
+                <div class="brand-copy">
+                    <h1>Interview Agent</h1>
+                    <p>Adaptive Technical Interview</p>
+                </div>
+            </div>
+
+            <div class="header-status">
+                <span class="status-dot"></span>
+                <span id="connectionStatus">Ready</span>
+            </div>
+        </header>
+
+
+        <!-- =================================================
+             START SCREEN
+        ================================================== -->
+        <main>
+
+            <section
+                id="startScreen"
+                class="screen start-screen"
+                aria-labelledby="startTitle"
+            >
+
+                <div class="hero-content">
+
+                    <span class="eyebrow">
+                        AI-POWERED TECHNICAL INTERVIEW
+                    </span>
+
+                    <h2 id="startTitle">
+                        Test what you
+                        <span>actually know.</span>
+                    </h2>
+
+                    <p class="hero-description">
+                        An adaptive interviewer that selects questions from
+                        your learning journey, evaluates your answers, and
+                        generates a structured performance report.
+                    </p>
+
+                    <!-- Candidate Card -->
+                    <div class="candidate-card">
+
+                        <div class="section-heading">
+                            <div>
+                                <h3>Candidate Profile</h3>
+                                <p>Enter your details to start the interview.</p>
+                            </div>
+                        </div>
+
+                        <form id="candidateForm" novalidate>
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+                                    <label for="candidateId">
+                                        Candidate ID
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="candidateId"
+                                        name="candidateId"
+                                        placeholder="e.g. CAND-018"
+                                        autocomplete="off"
+                                        required
+                                    >
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="candidateName">
+                                        Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="candidateName"
+                                        name="candidateName"
+                                        placeholder="Your name"
+                                        autocomplete="name"
+                                        required
+                                    >
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="jobRole">
+                                        Job Role
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="jobRole"
+                                        name="jobRole"
+                                        value="AI Candidate"
+                                        placeholder="e.g. AI Engineer"
+                                    >
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="experience">
+                                        Years of Experience
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        id="experience"
+                                        name="experience"
+                                        min="0"
+                                        max="50"
+                                        value="0"
+                                    >
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                id="startError"
+                                class="form-error hidden"
+                                role="alert"
+                            ></div>
+
+
+                            <button
+                                type="submit"
+                                id="startInterviewBtn"
+                                class="primary-btn"
+                            >
+                                <span>Start Interview</span>
+                                <span class="btn-arrow">→</span>
+                            </button>
+
+                        </form>
+                    </div>
+
+
+                    <!-- Feature Cards -->
+                    <div class="feature-grid">
+
+                        <article class="feature-card">
+                            <div class="feature-icon">01</div>
+                            <h3>Adaptive</h3>
+                            <p>
+                                Questions can adapt to candidate performance
+                                and difficulty.
+                            </p>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-icon">02</div>
+                            <h3>Curriculum-Aware</h3>
+                            <p>
+                                Topics are selected from the candidate's
+                                learning journey.
+                            </p>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-icon">03</div>
+                            <h3>Explainable</h3>
+                            <p>
+                                Answers are evaluated across concepts,
+                                technical depth, practicality and relevance.
+                            </p>
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 INTERVIEW SCREEN
+            ================================================== -->
+            <section
+                id="interviewScreen"
+                class="screen interview-screen hidden"
+                aria-labelledby="questionTitle"
+            >
+
+                <div class="interview-container">
+
+                    <!-- Progress -->
+                    <div class="interview-top">
+
+                        <div class="progress-copy">
+                            <span class="small-label">INTERVIEW PROGRESS</span>
+
+                            <strong id="progressText">
+                                Question 1 of 8
+                            </strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                id="progressBar"
+                                class="progress-fill"
+                                style="width: 12.5%;"
+                            ></div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Candidate Info -->
+                    <div class="candidate-strip">
+
+                        <div>
+                            <span>Candidate</span>
+                            <strong id="activeCandidateName">
+                                Candidate
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>ID</span>
+                            <strong id="activeCandidateId">
+                                —
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Session</span>
+                            <strong id="activeSessionId">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Question Card -->
+                    <article class="question-card">
+
+                        <div class="question-meta">
+
+                            <span
+                                id="questionNumber"
+                                class="question-number"
+                            >
+                                QUESTION 01
+                            </span>
+
+                            <div class="question-tags">
+
+                                <span
+                                    id="topicBadge"
+                                    class="tag topic-tag"
+                                >
+                                    General
+                                </span>
+
+                                <span
+                                    id="difficultyBadge"
+                                    class="tag difficulty-tag easy"
+                                >
+                                    Easy
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="question-content">
+
+                            <span class="small-label">
+                                TECHNICAL QUESTION
+                            </span>
+
+                            <h2 id="questionTitle">
+                                Your question will appear here.
+                            </h2>
+
+                        </div>
+
+
+                        <!-- Answer -->
+                        <form id="answerForm">
+
+                            <div class="answer-heading">
+                                <label for="answerInput">
+                                    Your Answer
+                                </label>
+
+                                <span id="wordCounter">
+                                    0 words
+                                </span>
+                            </div>
+
+                            <textarea
+                                id="answerInput"
+                                name="answer"
+                                rows="8"
+                                placeholder="Explain your answer clearly. Include technical details or a practical example where relevant..."
+                                autocomplete="off"
+                                required
+                            ></textarea>
+
+
+                            <div
+                                id="answerError"
+                                class="form-error hidden"
+                                role="alert"
+                            ></div>
+
+
+                            <div class="answer-actions">
+
+                                <span class="answer-hint">
+                                    Take your time and explain your reasoning.
+                                </span>
+
+                                <button
+                                    type="submit"
+                                    id="submitAnswerBtn"
+                                    class="primary-btn"
+                                >
+                                    <span>Submit Answer</span>
+                                    <span class="btn-arrow">→</span>
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </article>
+
+
+                    <!-- Evaluation Preview -->
+                    <div
+                        id="evaluationPanel"
+                        class="evaluation-panel hidden"
+                    >
+
+                        <div class="evaluation-header">
+                            <span class="small-label">
+                                ANSWER EVALUATION
+                            </span>
+
+                            <span id="evaluationScore">
+                                —
+                            </span>
+                        </div>
+
+                        <p id="evaluationFeedback">
+                            Evaluation feedback will appear here.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Loading Overlay -->
+                    <div
+                        id="loadingState"
+                        class="loading-state hidden"
+                        aria-live="polite"
+                    >
+                        <div class="spinner"></div>
+                        <p>Evaluating your answer...</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 RESULT SCREEN
+            ================================================== -->
+            <section
+                id="resultScreen"
+                class="screen result-screen hidden"
+                aria-labelledby="resultTitle"
+            >
+
+                <div class="result-container">
+
+                    <div class="result-header">
+
+                        <span class="eyebrow">
+                            INTERVIEW COMPLETE
+                        </span>
+
+                        <h2 id="resultTitle">
+                            Your Interview Report
+                        </h2>
+
+                        <p id="resultSummary">
+                            Your interview performance has been evaluated.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Score -->
+                    <div class="score-card">
+
+                        <div class="score-main">
+
+                            <span class="small-label">
+                                OVERALL SCORE
+                            </span>
+
+                            <div class="score-value">
+                                <strong id="overallScore">—</strong>
+                                <span>/100</span>
+                            </div>
+
+                            <span
+                                id="performanceBadge"
+                                class="performance-badge"
+                            >
+                                —
+                            </span>
+
+                        </div>
+
+
+                        <div class="score-stats">
+
+                            <div class="stat">
+                                <span>Questions</span>
+                                <strong id="totalQuestions">—</strong>
+                            </div>
+
+                            <div class="stat">
+                                <span>Completion</span>
+                                <strong id="completionPercentage">—</strong>
+                            </div>
+
+                            <div class="stat">
+                                <span>Curriculum Days</span>
+                                <strong id="curriculumDayCount">—</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Result Grid -->
+                    <div class="result-grid">
+
+                        <!-- Strengths -->
+                        <article class="result-card">
+
+                            <div class="result-card-header">
+                                <span class="result-icon positive">+</span>
+
+                                <div>
+                                    <h3>Strengths</h3>
+                                    <p>Areas where you performed well.</p>
+                                </div>
+                            </div>
+
+                            <ul
+                                id="strengthsList"
+                                class="result-list"
+                            >
+                                <li>No strengths available.</li>
+                            </ul>
+
+                        </article>
+
+
+                        <!-- Weak Areas -->
+                        <article class="result-card">
+
+                            <div class="result-card-header">
+                                <span class="result-icon negative">!</span>
+
+                                <div>
+                                    <h3>Areas to Improve</h3>
+                                    <p>Topics that need more attention.</p>
+                                </div>
+                            </div>
+
+                            <ul
+                                id="weakAreasList"
+                                class="result-list"
+                            >
+                                <li>No weak areas available.</li>
+                            </ul>
+
+                        </article>
+
+                    </div>
+
+
+                    <!-- Topic Scores -->
+                    <article class="topic-results-card">
+
+                        <div class="result-card-header">
+                            <span class="result-icon">◎</span>
+
+                            <div>
+                                <h3>Topic Performance</h3>
+                                <p>Performance across interview topics.</p>
+                            </div>
+                        </div>
+
+                        <div
+                            id="topicScores"
+                            class="topic-scores"
+                        >
+                            <!-- Filled by app.js -->
+                        </div>
+
+                    </article>
+
+
+                    <!-- Recommendation -->
+                    <article class="recommendation-card">
+
+                        <span class="small-label">
+                            RECOMMENDATION
+                        </span>
+
+                        <h3>What to do next</h3>
+
+                        <p id="recommendationText">
+                            Review the concepts covered during the interview
+                            and continue practicing technical explanations.
+                        </p>
+
+                        <ul
+                            id="nextStepsList"
+                            class="next-steps-list"
+                        >
+                            <!-- Filled by app.js -->
+                        </ul>
+
+                    </article>
+
+
+                    <div class="result-actions">
+
+                        <button
+                            type="button"
+                            id="restartInterviewBtn"
+                            class="primary-btn"
+                        >
+                            <span>Start New Interview</span>
+                            <span class="btn-arrow">↻</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- ================= FOOTER ================= -->
+        <footer class="footer">
+
+            <p>
+                AI Interview Agent
+                <span>•</span>
+                Adaptive Technical Interviewing
+            </p>
+
+            <p class="footer-status">
+                Phase 3.5
+            </p>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =====================================================
+         GLOBAL TOAST
+    ====================================================== -->
+    <div
+        id="toast"
+        class="toast hidden"
+        role="status"
+        aria-live="polite"
+    >
+        <span id="toastMessage"></span>
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+    <script src="js/app.js"></script>
+
+</body>
+</html>
