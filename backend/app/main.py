@@ -16,7 +16,6 @@ app = FastAPI(
 # ============================================================
 # CORS CONFIGURATION
 # ============================================================
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -27,7 +26,7 @@ app.add_middleware(
 
         # Production Vercel frontend
         "https://ai-interview-agent-iota-two.vercel.app",
-        "https://ai-interview-agent-46uiwsg6v-vanshtyagi7032-7748s-projects.vercel.app",
+        "https://ai-interview-agent-mjgn99q2c-vanshtyagi7032-7748s-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
